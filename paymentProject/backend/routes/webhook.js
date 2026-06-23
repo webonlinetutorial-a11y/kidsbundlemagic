@@ -33,6 +33,8 @@ router.post(
       const event =
         JSON.parse(body.toString());
 
+      console.log("Razorpay webhook received:", event.event);
+
       if (
         event.event === "payment.captured"
       ) {
@@ -75,6 +77,8 @@ router.post(
             );
         }
       }
+
+      console.log("Razorpay webhook processed successfully:", event.event);
 
       res.json({
         success: true
