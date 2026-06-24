@@ -859,16 +859,21 @@ p {
 .checkout-modal__dialog {
   position: relative;
   width: min(100%, 430px);
-  max-height: calc(100vh - 44px);
+  max-height: calc(100dvh - 44px);
   overflow-y: auto;
-  padding: 32px;
+  padding: 28px 32px 30px;
   border: 1px solid rgba(239, 215, 208, 0.9);
   border-radius: var(--radius-xl);
   background: #ffffff;
   box-shadow: var(--shadow-strong);
   text-align: center;
+  scrollbar-width: none;
   transform: translateY(14px) scale(0.98);
   transition: transform 180ms ease;
+}
+
+.checkout-modal__dialog::-webkit-scrollbar {
+  display: none;
 }
 
 .checkout-modal.is-open .checkout-modal__dialog {
@@ -902,9 +907,9 @@ p {
 
 .checkout-modal__icon {
   display: grid;
-  width: 58px;
-  height: 58px;
-  margin: 0 auto 15px;
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 13px;
   place-items: center;
   border-radius: 18px;
   background: var(--peach);
@@ -930,14 +935,14 @@ p {
 
 .checkout-modal__dialog p {
   max-width: 330px;
-  margin: 10px auto 22px;
+  margin: 8px auto 18px;
   color: var(--muted);
   font-size: 0.9rem;
 }
 
 .checkout-form {
   display: grid;
-  gap: 14px;
+  gap: 12px;
   text-align: left;
 }
 
@@ -951,7 +956,7 @@ p {
 
 .checkout-form input {
   width: 100%;
-  min-height: 48px;
+  min-height: 46px;
   padding: 0 15px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
