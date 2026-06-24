@@ -4,6 +4,7 @@ const checkoutForm = document.getElementById("checkoutForm");
 const checkoutFormError = document.getElementById("checkoutFormError");
 const checkoutSubmitBtn = document.getElementById("checkoutSubmitBtn");
 const checkoutCloseButtons = document.querySelectorAll("[data-checkout-close]");
+const API_BASE_URL = "https://kidsbundlemagic-backend.onrender.com";
 
 const setCheckoutError = (message = "") => {
   if (checkoutFormError) {
@@ -53,7 +54,7 @@ const validateCustomer = ({ name, email, mobile }) => {
 };
 
 const createPaymentOrder = async (customer) => {
-  const response = await fetch("https://kidsbundlemagic-backend.onrender.com/api/create-order", {
+  const response = await fetch(`${API_BASE_URL}/api/create-order`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -68,6 +69,26 @@ const createPaymentOrder = async (customer) => {
 
   if (!response.ok) {
     throw new Error("Unable to create payment order");
+  }
+
+  return response.json();
+};
+
+const verifyPaymentAndGetDownload = async (paymentResponse) => {
+  const response = await fetch(`${API_BASE_URL}/api/verify-payment`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      razorpay_order_id: paymentResponse.razorpay_order_id,
+      razorpay_payment_id: paymentResponse.razorpay_payment_id,
+      razorpay_signature: paymentResponse.razorpay_signature
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error("Unable to verify payment");
   }
 
   return response.json();
@@ -94,9 +115,16 @@ const openPaymentGateway = (order, customer) => {
     theme: {
       color: "#ff6b35"
     },
-    handler(response) {
-      alert("Payment Successful");
-      console.log(response);
+    async handler(response) {
+      try {
+        const download = await verifyPaymentAndGetDownload(response);
+
+        alert("Payment Successful. Your download will start now.");
+        window.location.href = download.download_url;
+      } catch (error) {
+        console.log(error);
+        alert("Payment successful, but download link could not be generated. Please contact support.");
+      }
     }
   };
 
