@@ -132,8 +132,8 @@ p {
   max-width: none;
   display: flex;
   align-items: end;
-  justify-content: space-between;
-  text-align: left;
+  justify-content: center;
+  /* text-align: left; */
 }
 
 .carousel-dots {
@@ -501,6 +501,18 @@ p {
 .category-card.mint .material-symbols-outlined { color: #007078; }
 .category-card.peach .material-symbols-outlined { color: #a43c12; }
 .category-card.cream .material-symbols-outlined { color: #80645f; }
+
+@media (min-width: 981px) {
+  .category-grid {
+    grid-template-columns: repeat(5, minmax(0, 160px));
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .category-card {
+    gap: 16px;
+  }
+}
 
 /* Dark benefits */
 .dark-section {
