@@ -177,10 +177,15 @@ p {
 }
 
 .brand {
-  color: var(--primary);
-  font-family: "Montserrat", sans-serif;
-  font-size: 0.94rem;
-  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+}
+
+.brand img {
+  display: block;
+  width: min(190px, 100%);
+  height: auto;
 }
 
 .nav-menu {
