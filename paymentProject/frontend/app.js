@@ -95,6 +95,13 @@ const verifyPaymentAndGetDownload = async (paymentResponse) => {
 };
 
 const openPaymentGateway = (order, customer) => {
+  // META PIXEL: InitiateCheckout Event
+  if (typeof fbq !== 'undefined') {
+    fbq('track', 'InitiateCheckout', {
+      value: 99.00,
+      currency: 'INR'
+    });
+  }
   const options = {
     key: order.key_id,
     amount: order.amount,
@@ -115,8 +122,17 @@ const openPaymentGateway = (order, customer) => {
     theme: {
       color: "#ff6b35"
     },
-    async handler(response) {
+     async handler(response) {
       try {
+        // META PIXEL: Purchase Event
+        if (typeof fbq !== 'undefined') {
+          fbq('track', 'Purchase', {
+            value: 99.00,
+            currency: 'INR',
+            transaction_id: response.razorpay_payment_id
+          });
+        }
+
         const download = await verifyPaymentAndGetDownload(response);
 
         alert("Payment Successful. Your download will start now.");
@@ -126,8 +142,6 @@ const openPaymentGateway = (order, customer) => {
         alert("Payment successful, but download link could not be generated. Please contact support.");
       }
     }
-  };
-
   const rzp = new Razorpay(options);
 
   rzp.on("payment.failed", (response) => {
