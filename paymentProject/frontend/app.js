@@ -1,4 +1,4 @@
-const checkoutTriggers = document.querySelectorAll("[data-checkout-trigger]");
+ const checkoutTriggers = document.querySelectorAll("[data-checkout-trigger]");
 const checkoutModal = document.getElementById("checkoutModal");
 const checkoutForm = document.getElementById("checkoutForm");
 const checkoutFormError = document.getElementById("checkoutFormError");
@@ -95,13 +95,14 @@ const verifyPaymentAndGetDownload = async (paymentResponse) => {
 };
 
 const openPaymentGateway = (order, customer) => {
-  // META PIXEL: InitiateCheckout Event
+  // 1. META PIXEL: InitiateCheckout Event
   if (typeof fbq !== 'undefined') {
     fbq('track', 'InitiateCheckout', {
       value: 99.00,
       currency: 'INR'
     });
   }
+
   const options = {
     key: order.key_id,
     amount: order.amount,
@@ -122,9 +123,9 @@ const openPaymentGateway = (order, customer) => {
     theme: {
       color: "#ff6b35"
     },
-     async handler(response) {
+    async handler(response) {
       try {
-        // META PIXEL: Purchase Event
+        // 2. META PIXEL: Purchase Event
         if (typeof fbq !== 'undefined') {
           fbq('track', 'Purchase', {
             value: 99.00,
@@ -142,6 +143,8 @@ const openPaymentGateway = (order, customer) => {
         alert("Payment successful, but download link could not be generated. Please contact support.");
       }
     }
+  };
+
   const rzp = new Razorpay(options);
 
   rzp.on("payment.failed", (response) => {
